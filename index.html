@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سينما بلاي | Cinema Play</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+        body {
+            background-color: #141414;
+            color: #ffffff;
+            direction: rtl;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: #e50914;
+            letter-spacing: 1px;
+        }
+        .hero {
+            height: 70vh;
+            background: linear-gradient(to top, #141414, transparent), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 50px 5%;
+        }
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 16px;
+            max-width: 600px;
+            margin-bottom: 20px;
+            color: #b3b3b3;
+        }
+        .btn {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: fit-content;
+        }
+        .btn:hover {
+            background-color: #f40612;
+        }
+        .section {
+            padding: 30px 5%;
+        }
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .card {
+            background: #222;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .card-title {
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+        /* نافذة الفيديو المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            width: 80%;
+            max-width: 800px;
+            height: 450px;
+            position: relative;
+        }
+        .modal-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">سينما بلاي | Cinema Play</div>
+    </header>
+
+    <div class="hero">
+        <h1>بكار - مغامرات مصرية</h1>
+        <p>استمتع بأجمل ذكريات الطفولة والمسلسلات والأنمي بجودة عالية وبدون إعلانات مزعجة.</p>
+        <button class="btn" onclick="openPlayer('https://www.youtube.com/embed/dQw4w9WgXcQ')">تشغيل الآن</button>
+    </div>
+
+    <div class="section">
+        <div class="section-title">الكلاسيكيات والكرتون</div>
+        <div class="grid">
+            <div class="card" onclick="openPlayer('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+                <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=500&q=80" alt="كرتون">
+                <div class="card-title">مسلسل بكار</div>
+            </div>
+            <div class="card" onclick="openPlayer('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=500&q=80" alt="أنمي">
+                <div class="card-title">مغامرات شيقة</div>
+            </div>
+            <div class="card" onclick="openPlayer('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=80" alt="أفلام">
+                <div class="card-title">فيلم سينمائي</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة العرض -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePlayer()">&times; إغلاق</span>
+            <iframe id="videoFrame" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        function openPlayer(url) {
+            document.getElementById('videoFrame').src = url;
+            document.getElementById('videoModal').style.display = 'flex';
+        }
+        function closePlayer() {
+            document.getElementById('videoFrame').src = '';
+            document.getElementById('videoModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
