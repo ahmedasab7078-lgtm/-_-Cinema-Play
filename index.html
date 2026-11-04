@@ -119,9 +119,9 @@
             z-index: 2000;
         }
         .modal-content {
-            width: 80%;
-            max-width: 800px;
-            height: 450px;
+            width: 90%;
+            max-width: 900px;
+            aspect-ratio: 16 / 9;
             position: relative;
         }
         .modal-content iframe {
@@ -175,19 +175,29 @@
     <div class="modal" id="videoModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closePlayer()">&times; إغلاق</span>
-            <iframe id="videoFrame" src="" allowfullscreen></iframe>
+            <iframe id="videoFrame" src="" title="مشغل الفيديو"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </div>
 
     <script>
         function openPlayer(url) {
-            document.getElementById('videoFrame').src = url;
+            const separator = url.includes('?') ? '&' : '?';
+            document.getElementById('videoFrame').src = url + separator + 'autoplay=1&rel=0&playsinline=1';
             document.getElementById('videoModal').style.display = 'flex';
         }
         function closePlayer() {
             document.getElementById('videoFrame').src = '';
             document.getElementById('videoModal').style.display = 'none';
         }
+        // إغلاق المشغل عند الضغط خارج الفيديو أو على زر Esc
+        document.getElementById('videoModal').addEventListener('click', function (e) {
+            if (e.target === this) closePlayer();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closePlayer();
+        });
     </script>
 
 </body>
